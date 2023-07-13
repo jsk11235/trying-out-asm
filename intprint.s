@@ -2,20 +2,28 @@
 .align 2
 
 _start:
-    mov w10, 11017
+    movz    w10, 1           
+    movk    w10, 1, LSL #16  
+
     mov w11, 10
     mov w14, 0
-    b intprint
+    bl intprint
+    b _end
 
 
 // load number into w10 and base into w11 before invoking
 intprint:
-    mov X15, sp
+    stp X29, X30, [sp, -8] // store frame pointer to prev function and return address
+    sub X29, sp , 8
+    sub sp, sp, 16
+    sub X15, sp , 1
+    mov X2, 0
     bl _looproutine
     mov X1, X15 // Load X15 (address of char pointer) into X1
     bl _print
     sub lr, lr, 20
-    b _end
+    ldp X29, X30, [X29]
+    ret
 
 _looproutine:
     udiv    w12, w10, w11
@@ -30,13 +38,13 @@ _looproutine:
 
     mov w10, w12
 
+    add X2 , X2 , 1
     cbnz w12, _looproutine
     ret
 
 _print:
     mov X16, 4
     mov X0, 1
-    mov X2, 8
     svc 0
     ret
 
