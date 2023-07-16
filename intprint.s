@@ -1,6 +1,13 @@
 .global _start
 .align 2
 
+
+// Note, when loaded from the stack at the end of a function,
+// the registers X29 and X30 will be populated with
+// the start of the previous function's stack memory
+// and the return address from the current (about to terminate) function
+// to its parent
+
 _start:
     movz    w10, 0xAAB           
     movk    w10, 0xAAA, LSL #16  
