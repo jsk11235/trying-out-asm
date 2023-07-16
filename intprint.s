@@ -3,6 +3,7 @@
 
 
 // Note, when loaded from the stack at the end of a function,
+// Register X29 will already be populated with the start of this function's memory
 // the registers X29 and X30 will be populated with
 // the start of the previous function's stack memory
 // and the return address from the current (about to terminate) function
